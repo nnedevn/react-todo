@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import {Tooltip, OverlayTrigger} from 'react-bootstrap'
 import './App.css';
 
 class App extends Component {
@@ -45,7 +45,12 @@ class App extends Component {
     this.setState({newItem: e.target.value, error: ''});
   }
 
+  
   render() {
+   const tooltip = (
+     <Tooltip id="tooltip"> <strong> Wow!</strong> Do you really want to delete everything? </Tooltip>
+    );
+    
     return (
       <div className="container">
         <header className="header-background">
@@ -64,7 +69,10 @@ class App extends Component {
        {/* Button to clear the list */}
        <div className="text-left">
         <button className="btn btn-primary" onClick={this.add} >Add</button>
-        <button className="btn btn-warning" onClick={this.clear}>Clear</button>
+       
+        <OverlayTrigger overlay={tooltip} placement="top">
+         <button className="btn btn-warning" onClick={this.clear}>Clear</button>
+        </OverlayTrigger>
        </div>
        
       </div>
@@ -73,13 +81,10 @@ class App extends Component {
 }
 
 class ToDoList extends Component{
-  constructor(props){
-    super(props);
 
-  }
   render(){
     const toDoItems = this.props.items.map(thing => {
-      return <ListItem item={thing} onDelete={this.props.onDelete}/>
+      return <ListItem key={Math.random()} item={thing} onDelete={this.props.onDelete}/>
     });
   
     return(
@@ -90,9 +95,7 @@ class ToDoList extends Component{
 }
 
 class ListItem extends Component{
-  constructor(props){
-    super(props);
-  }
+
 deleteHandler = () => {
   //pass the item prop
   console.log('delete handler', this.props.item); 
